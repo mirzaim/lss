@@ -3,8 +3,11 @@ import numpy as np
 
 class LinearSystemSolver:
 
-    def __init__(self, a, b):
+    def __init__(self, a, b=None):
         """"""
+        if b is None:
+            b = np.zeros((self.a.shape[0], 1))
+
         self.a = np.array(a, dtype=np.float64)
         self.b = np.array(b, dtype=np.float64)
         self.augmented_matrix = np.column_stack((self.a, self.b))
@@ -20,8 +23,7 @@ class LinearSystemSolver:
 
     def dim_nul_a(self):
         """return dimension of null space A"""
-        zero_b = np.zeros((self.a.shape[0], 1))
-        temp = LinearSystemSolver(self.a, zero_b)
+        temp = LinearSystemSolver(self.a)
         return len(temp.result_matrix()) - 1
 
     def row_replacement(self, k, i, j):
