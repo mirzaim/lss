@@ -6,7 +6,7 @@ class LinearSystemSolver:
     def __init__(self, a, b=None):
         """"""
         if b is None:
-            b = np.zeros((self.a.shape[0], 1))
+            b = np.zeros((a.shape[0], 1))
 
         self.a = np.array(a, dtype=np.float64)
         self.b = np.array(b, dtype=np.float64)
