@@ -14,6 +14,16 @@ class LinearSystemSolver:
         self.echelon_form()
         self.augmented_matrix = np.around(self.augmented_matrix, 3)
 
+    def rank_a(self):
+        """return rank coefficient matrix A"""
+        return self.a.shape[1] - self.dim_nul_a()
+
+    def dim_nul_a(self):
+        """return dimension of null space A"""
+        zero_b = np.zeros((self.a.shape[0], 1))
+        temp = LinearSystemSolver(self.a, zero_b)
+        return len(temp.result_matrix()) - 1
+
     def row_replacement(self, k, i, j):
         """sum row i with k times of j in augmented matrix"""
         self.augmented_matrix[i] += self.augmented_matrix[j] * k
