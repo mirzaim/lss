@@ -4,7 +4,11 @@ import numpy as np
 class LinearSystemSolver:
 
     def __init__(self, a, b=None):
-        """"""
+        """Get coefficient matrix a and constant vector b, and solve the equation.
+
+        :param a coefficient matrix
+        :param b constant vector b, default value is zero vector.
+        """
         if b is None:
             b = np.zeros((a.shape[0], 1))
 
@@ -18,28 +22,28 @@ class LinearSystemSolver:
         self.augmented_matrix = np.around(self.augmented_matrix, 3)
 
     def rank_a(self):
-        """return rank coefficient matrix A"""
+        """Return rank coefficient matrix A."""
         return self.a.shape[1] - self.dim_nul_a()
 
     def dim_nul_a(self):
-        """return dimension of null space A"""
+        """Return dimension of null space A."""
         temp = LinearSystemSolver(self.a)
         return len(temp.result_matrix()) - 1
 
     def row_replacement(self, k, i, j):
-        """sum row i with k times of j in augmented matrix"""
+        """Sum row i with k times of j in augmented matrix."""
         self.augmented_matrix[i] += self.augmented_matrix[j] * k
 
     def row_scaling(self, k, i):
-        """scale row i, k times in augmented matrix"""
+        """Scale row i, k times in augmented matrix."""
         self.augmented_matrix[i] *= k
 
     def row_interchange(self, i, j):
-        """change place of row i and j in augmented matrix"""
+        """Change place of row i and j in augmented matrix."""
         self.augmented_matrix[[i, j]] = self.augmented_matrix[[j, i]]
 
     def echelon_form(self):
-        """do row operation and change matrix to echelon form"""
+        """Do row operation and change matrix to echelon form."""
         current_pivot_column = 0
         self.steps_to_solve.append(self.augmented_matrix.__str__())
         for i in range(self.augmented_matrix.shape[0]):
@@ -65,11 +69,11 @@ class LinearSystemSolver:
             current_pivot_column += 1
 
     def get_reduced_echelon_form(self):
-        """return augmented matrix"""
+        """Return augmented matrix."""
         return self.augmented_matrix.copy()
 
     def get_steps_to_solve(self):
-        """get steps in string that passed to reach result."""
+        """Get steps in string that passed to reach result."""
         steps = "#### Steps:\n"
         for i in range(len(self.steps_to_solve)):
             steps += f"{i + 1})\n"
@@ -78,12 +82,12 @@ class LinearSystemSolver:
         return steps
 
     def is_consistent(self):
-        """return solution to "is consistent?" question"""
+        """Return solution to "is consistent?" question."""
         # Check last column in augmented matrix is pivot column or not
         return (self.augmented_matrix.shape[1] - 1) not in self.pivot_columns
 
     def result_matrix(self):
-        """return vectors that form result."""
+        """Return vectors that form result."""
         vectors = []
         for j in list(set(range(self.augmented_matrix.shape[1])) - set(self.pivot_columns)):
             temp = []
@@ -98,7 +102,7 @@ class LinearSystemSolver:
         return vectors
 
     def get_result_string(self):
-        """return string that show the result of system."""
+        """Return string that show the result of system."""
         if not self.is_consistent():
             return "INCONSISTENT"
 
